@@ -1,0 +1,120 @@
+User: root pw: voidlinux
+
+xbps
+====
+sudo xbps-install -S  (syncs mirrors)
+sudo xbps-install -Su (updates installed software)
+sudo xbps-query -Rs (item to search for)
+sudo xbps-install -S (item to install)
+sudo xbps-remove (item to remove)
+
+Run the folowing command to start the install process:
+$ void-installer
+
+Install network version - not local
+
+Partitioning
+============
+use CFdisk for partioning.
+use DOS (MBR) for BIOS system (gpt for efi)
+# 3x Primary partions:
+boot vFAT32 = 1GB
+swap = 2x Ram
+/ = rest of disk
+
+x11
+===
+sudo xbps-install -Su xbps
+sudo xbps-install -S void-repo-nonfree
+sudo mkdir -p /etc/xbps.d
+sudo cp /usr/share/xbps.d/00-repository-main.conf /etc/xbps.d/ (use tab to see all repositories)
+sudo cp /usr/share/xbps.d/10-repository-nonfree.conf /etc/xbps.d/
+(edit the config files to a repository near you using void doc as a guide)
+(keep /current at the end - https://repo-de.voidlinux.org/current)
+sudo xbps-install -S (to sync mirrors)
+sudo xbps-install -Su                       # sync mirrors first
+sudo xbps-install -S xorg dbus elogind vim  # xorg for x11
+                                            # dbus for inter-process comms
+                                            # elogind tracks logged in users 
+                                            # vim to replace vi
+
+Symbolic links to auto run services:
+sudo ln -s /etc/sv/dbus /var/service  
+sudo ln -s /etc/sv/elogind /var/service
+
+Start services now:
+sudo sv up dbus
+sudo sv up elogind
+
+Set keyboard layout if needed:
+sudo setxkbmap -layout gb
+
+Users
+=====
+useradd -m chris 
+passwd chris (then follow prompts)
+usermod -a -G wheel,floppy,audio,video,cdrom,optical,kvm,xbuilder chris
+mkdir Documents Downloads Music Pictures Public videos
+
+Window manager
+=============
+sudo xbps-install openbox obconf obmenu-generator picom tint2 xterm
+sudo xbps-install lightdm lightdm-gtk3-greeter alacritty lxappearance (Polkit will be installed as a dependency) 
+sudo xbps-install nitrogen pipewire pipewire-pluse NetworkManager git curl wget
+sudo xbps-install fontmanager firefox dmenu xdg-desktop-portal-gtk cups avahi nss-mdns
+sudo xbps-install gnome-backgrounds mate-backgrounds nerd-fonts nerd-fonts-otf
+sudo xbps-install system-config-printer Thunar leafpad
+
+sudo ln -s /etc/sv/cupsd /var/service
+sudo ln -s /etc/sv/avahi-daemon /var/service
+sudo sv up cupsd
+sudo sv up avahi-daemon
+
+system-config-printer
+
+sudo vim /etc/lightdm/lightdm.conf
+/Seat
+uncomment greeter-session  and change to your greeter eg lightdm-gtk3-greeter
+:wq
+
+sudo ln -s /etc/sv/lightdm /var/service
+
+sudo xbps-install btop exa starship tldr
+
+vim .config/openbox/autostart (not created by default)
+    xrandr --output Virtual-1 --mode 1920x1080 --rate 60
+    tint2 &
+    nitrogen --restore 
+
+or 
+git clone https://github.com/testpilotuk/myVoidLinuxBup.git
+(create dirs and cp dotfiles)
+
+Set a new background using nitrogen
+
+https://github.com/yurifuko/dotfiles/wiki/Guides#how-to-pipewire-w-wireplumber-on-void-linux
+(tutorial on setting up pipewire in voidlinux)
+
+vim .config/openbox/autostart and add pipewire &
+loginctl reboot
+
+sudo xbps-install breeze gnome-themes-standard
+sudo xbps-remove lxappearance-obconf (removes segmentation error)
+obmenu-generator -p      
+
+git clone https://github.com/addy-dclxvi/openbox-theme-collections ~/.themes 
+(for some nice openbox themes)
+
+https://github.com/downthecrop/tint2-theme-collections
+(for some nice tint2 themes)
+
+obconf (openbox theme changer - Raven)
+lxappearance (gtk theme changer - Adwaita-dark)
+
+https://youtu.be/r5HzpWK7SBY
+(youTube video on Installing openbox)
+
+Edit:
+.config/tint2rc (for panel changes)
+.config/openbox/rc.xml (for keybindings)
+
