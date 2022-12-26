@@ -1,4 +1,5 @@
-xrandr --output Virtual-1 --mode 1920x1080 --rate 60
+xrandr --output Virtual-1 --mode 1920x1080 --rate 60 &
 picom --config ~/.config/picom/picom.conf &
-(sleep 3s && nitrogen --restore --set-scaled) &
+pipewire &
+(sleep 2s && nitrogen --restore --set-scaled) &
 tint2 &

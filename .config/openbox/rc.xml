@@ -328,9 +328,9 @@
       <action name="Execute">
         <startupnotify>
           <enabled>true</enabled>
-          <name>mousepad</name>
+          <name>Text Editor</name>
         </startupnotify>
-        <command>mousepad</command>
+        <command>leafpad</command>
       </action>
     </keybind>
 
