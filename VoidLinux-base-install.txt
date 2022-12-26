@@ -102,6 +102,9 @@ sudo xbps-install breeze gnome-themes-standard
 sudo xbps-remove lxappearance-obconf (removes segmentation error)
 obmenu-generator -p      
 
+Edit the .config/obmenu-generator/config.pl and change geany to leafpad
+Right click menu > advanced settings > obmenu-generator > Menu Schema and change the menu default apps
+
 git clone https://github.com/addy-dclxvi/openbox-theme-collections ~/.themes 
 (for some nice openbox themes)
 
