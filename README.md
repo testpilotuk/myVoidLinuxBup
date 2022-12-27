@@ -1,5 +1,5 @@
 # myVoidLinuxBup
-A backup of personal configs for my VoidLinux openbox setup
+A backup of personal configs for my VoidLinux openbox setup and a set of instructions (VoidLinux-base-install.txt) I created for building a fully functioning Openbox desktop from the VoidLinux base iso.
 
 To include but not restricted to:
 
