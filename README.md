@@ -26,5 +26,6 @@ W-S-Return = Thunar file manager
 W-r = DMenu run prompt</pre>
 
 ### Changing desktops
+<pre>
 W-n = move to chosen desktop where n = a number between 1 and 4
-W-S-n = move current window to chosen desktop where n = a number between 1 and 4
+W-S-n = move current window to chosen desktop where n = a number between 1 and 4</pre>
