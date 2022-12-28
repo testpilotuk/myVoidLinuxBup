@@ -18,11 +18,12 @@ To include but not restricted to:
 W = super key | S = shift key | A = alt key | C = ctl key
 
 ### Program Launchers
+<pre>
 W-e = Leafpad GUI text editor
 W-b = Firefox
 W-Return = Alacritty terminal
 W-S-Return = Thunar file manager
-W-r = DMenu run prompt
+W-r = DMenu run prompt</pre>
 
 ### Changing desktops
 W-n = move to chosen desktop where n = a number between 1 and 4
