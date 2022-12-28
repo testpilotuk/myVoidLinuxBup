@@ -41,3 +41,16 @@ C-W-2 = Lower quarter left
 C-W-3 = Lower quarter right
 C-W-4 = Upper quarter right</p>
 
+### Window focus switching
+<pre>
+W-l = Move focus to right window
+W-h = Move focus to left window
+W-k = Move focus up
+W-j = Move focus down</pre>
+
+### Other
+<pre>
+W-S-c = Close window
+A-Space = Show menu
+Print = Save screen shot with ImageMagick to Pictures dir with date plus time filename .png
+</pre>
