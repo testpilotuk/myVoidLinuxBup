@@ -413,6 +413,14 @@
         <command>dmenu_run</command>
       </action>
     </keybind>
+    
+    <!-- Print screen with ImageMagick and save to Pictures dir -->
+    <keybind key="Print">
+      <action name="Execute">
+        <command>sh -c "import -window root ~/Pictures/$(date '+%Y%m%d-%H%M%S').png"</command>
+      </action>
+    </keybind>
+
   </keyboard>
   <mouse>
     <dragThreshold>1</dragThreshold>
