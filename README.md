@@ -13,3 +13,17 @@ To include but not restricted to:
 .config/picom/picom.conf
 .config/alacritty/alacritty.yml
 .config/starship.toml
+
+## Keybindings
+W = super key | S = shift key | A = alt key | C = ctl key
+
+### Program Launchers
+W-e = Leafpad GUI text editor
+W-b = Firefox
+W-Return = Alacritty terminal
+W-S-Return = Thunar file manager
+W-r = DMenu run prompt
+
+### Changing desktops
+W-n = move to chosen desktop where n = a number between 1 and 4
+W-S-n = move current window to chosen desktop where n = a number between 1 and 4
