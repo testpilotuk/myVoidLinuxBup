@@ -52,4 +52,4 @@ W-j = Move focus down</pre>
 <pre>
 W-S-c = Close window
 A-Space = Show menu
-Print = Save screen shot with ImageMagick to Pictures dir with date plus time filename .png</pre>
+Print = Save screen shot with ImageMagick to Pictures dir with date plus time and file type .png</pre>
