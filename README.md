@@ -29,3 +29,15 @@ W-r = DMenu run prompt</pre>
 <pre>
 W-n = move to chosen desktop where n = a number between 1 and 4
 W-S-n = move current window to chosen desktop where n = a number between 1 and 4</pre>
+
+### Pseudo Window Tiling
+<pre>
+W-up = Maximise window
+W-down = MiddleScreen
+W-left = Half screen left
+W-right = Half screen right
+C-W-1 = Upper quarter left
+C-W-2 = Lower quarter left
+C-W-3 = Lower quarter right
+C-W-4 = Upper quarter right</p>
+
