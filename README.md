@@ -39,7 +39,7 @@ W-right = Half screen right
 C-W-1 = Upper quarter left
 C-W-2 = Lower quarter left
 C-W-3 = Lower quarter right
-C-W-4 = Upper quarter right</p>
+C-W-4 = Upper quarter right</pre>
 
 ### Window focus switching
 <pre>
