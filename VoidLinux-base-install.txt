@@ -1,45 +1,67 @@
-User: root pw: voidlinux
 
-xbps
-====
-sudo xbps-install -S  (syncs mirrors)
-sudo xbps-install -Su (updates installed software)
-sudo xbps-query -Rs (item to search for)
-sudo xbps-install -S (item to install)
-sudo xbps-remove (item to remove)
+
+# testpilotuk my Void LinuxBup
+A backup of personal configs for my VoidLinux openbox setup.
+This is a text version of my wiki as you will be faced with only the terminal after a base install and although there is no formatting in this file you will be able to read it in a terminal text editor or pager.
+
+If  you want to clone my config files to skip editing configs then, once you have git installed, type the following and copy the files from myVoidLinuxBup directory to their intended directories.
+git clone https://github.com/testpilotuk/myVoidLinuxBup.git
+
+## Void Linux X86_64 Base Image Install Guide (for me)
+Welcome to the my VoidLinux backup wiki! These are my personal notes to guide me through installing Void Linux Base image and create a customised version of an Openbox desktop with X11 display server and Pipewire for sound. If others are able to make use of it that's great too, I will attempt to make this wiki more legible over time. During the install you will use the following credentials
+
+User 'root' and the password 'voidlinux'
+
+## xbps package manager
+sudo xbps-install -S   (syncs mirrors)
+sudo xbps-install -Su  (updates installed software)
+sudo xbps-query -Rs    (item to search for)
+sudo xbps-install -S   (item to install)
+sudo xbps-remove       (item-to-remove)
+
+For a more in-depth description see: Void Linux XBPS Package Manager
 
 Run the folowing command to start the install process:
 $ void-installer
 
-Install network version - not local
+NOTE: Install the network version - not local
 
-Partitioning
-============
+## Partitioning
+
 use CFdisk for partioning.
 use DOS (MBR) for BIOS system (gpt for efi)
-# 3x Primary partions:
-boot vFAT32 = 1GB
-swap = 2x Ram
-/ = rest of disk
 
-x11
-===
+NOTE: I use 3 Primary partions:
+    boot vFAT32 = 1GB
+    swap = 2x Ram
+    / = rest of disk
+
+reboot after install
+
+## User (my user was not created after install)
+useradd -m chris
+passwd chris (then follow prompts)
+usermod -a -G wheel,floppy,audio,video,cdrom,optical,kvm,xbuilder chris
+mkdir Documents Downloads Music Pictures Public videos
+
+## Setup mirrors including non-free repository (as a normal user with sudo)
 sudo xbps-install -Su xbps
 sudo xbps-install -S void-repo-nonfree
 sudo mkdir -p /etc/xbps.d
-sudo cp /usr/share/xbps.d/00-repository-main.conf /etc/xbps.d/ (use tab to see all repositories)
+sudo cp /usr/share/xbps.d/00-repository-main.conf /etc/xbps.d/
 sudo cp /usr/share/xbps.d/10-repository-nonfree.conf /etc/xbps.d/
-(edit the config files to a repository near you using void doc as a guide)
-(keep /current at the end - https://repo-de.voidlinux.org/current)
+
+NOTE: Edit the config files to a repository near you using Void Mirrors as a guide.
+keep /current at the end eg https://repo-de.voidlinux.org/current
+
 sudo xbps-install -S (to sync mirrors)
-sudo xbps-install -Su                       # sync mirrors first
-sudo xbps-install -S xorg dbus elogind vim  # xorg for x11
-                                            # dbus for inter-process comms
-                                            # elogind tracks logged in users 
-                                            # vim to replace vi
+sudo xbps-install -Su (check for updates)
+sudo xbps-install -S xorg dbus elogind vim psmisc
+
+I use xorg for my display server, dbus for inter-process comms, elogind tracks logged in users and I prefer to use vim rather than vi. I also install psmisc proc filesystem utilities for killall etc.
 
 Symbolic links to auto run services:
-sudo ln -s /etc/sv/dbus /var/service  
+sudo ln -s /etc/sv/dbus /var/service
 sudo ln -s /etc/sv/elogind /var/service
 
 Start services now:
@@ -47,77 +69,112 @@ sudo sv up dbus
 sudo sv up elogind
 
 Set keyboard layout if needed:
-sudo setxkbmap -layout gb
+$ sudo setxkbmap -layout gb
 
-Users
-=====
-useradd -m chris 
-passwd chris (then follow prompts)
-usermod -a -G wheel,floppy,audio,video,cdrom,optical,kvm,xbuilder chris
-mkdir Documents Downloads Music Pictures Public videos
-
-Window manager
-=============
+## Window manager
 sudo xbps-install openbox obconf obmenu-generator picom tint2 xterm
-sudo xbps-install lightdm lightdm-gtk3-greeter alacritty lxappearance (Polkit will be installed as a dependency) 
+sudo xbps-install lightdm lightdm-gtk3-greeter alacritty lxappearance
 sudo xbps-install nitrogen pipewire pipewire-pluse NetworkManager git curl wget
 sudo xbps-install fontmanager firefox dmenu xdg-desktop-portal-gtk cups avahi nss-mdns
 sudo xbps-install gnome-backgrounds mate-backgrounds nerd-fonts nerd-fonts-otf
 sudo xbps-install system-config-printer Thunar leafpad
 
+NOTE: Polkit will be installed as a dependency
+
 sudo ln -s /etc/sv/cupsd /var/service
 sudo ln -s /etc/sv/avahi-daemon /var/service
 sudo sv up cupsd
 sudo sv up avahi-daemon
-
 system-config-printer
 
+NOTE: If you are installing on a VM you may need to edit picom.conf and comment out the vsync entry. I usually like to create my own configs as I learn over time but in this case my picom.conf is copied directly from Derek Taylor's (DistroTube) gitlab dotfiles repo as I am still studying picom and it's options. For now I will be staying with DT's config as it is a very readable, short-and-to-the-point config file and is well commented.
+
+### Edit lightdm.conf
 sudo vim /etc/lightdm/lightdm.conf
 /Seat
-uncomment greeter-session  and change to your greeter eg lightdm-gtk3-greeter
+uncomment greeter-session and change to your greeter eg lightdm-gtk3-greeter
 :wq
 
 sudo ln -s /etc/sv/lightdm /var/service
 
-sudo xbps-install btop exa starship tldr
+Now login using your new graphical login manager
 
-vim .config/openbox/autostart (not created by default)
+### Now install some favourites
+sudo xbps-install btop exa starship tldr neofetch ImageMagick feh
+sudo xbps-install gimp inkscape libreoffice
+
+NOTE: My rc.xml config assigns ImageMagick to the print screen key for screen shots.
+
+### Create and edit autostart
+
+vim .config/openbox/autostart
+Enter the following lines:
     xrandr --output Virtual-1 --mode 1920x1080 --rate 60
     tint2 &
     nitrogen --restore 
 
-or 
-git clone https://github.com/testpilotuk/myVoidLinuxBup.git
-(create dirs and cp dotfiles)
+Set a new background using nitrogen by clicking preferences and adding the directories for the backgrounds you installed.
+Now logout and log back in to check everything is working as expected.
 
-Set a new background using nitrogen
+## Pipewire set up
+For a complete tutorial on the initial setup of Pipewire read Yurifuko's Wiki
+Edit .config/openbox/autostart and add pipewire & to the file like this:
 
-https://github.com/yurifuko/dotfiles/wiki/Guides#how-to-pipewire-w-wireplumber-on-void-linux
-(tutorial on setting up pipewire in voidlinux)
+xrandr --output Virtual-1 --mode 1920x1080 --rate 60 &
+picom --config ~/.config/picom/picom.conf &
+pipewire &
+(sleep 2s && nitrogen --restore --set-scaled) &
+tint2 & 
 
-vim .config/openbox/autostart and add pipewire &
+Exit and type:
 loginctl reboot
 
+## Some customisation
+
 sudo xbps-install breeze gnome-themes-standard
-sudo xbps-remove lxappearance-obconf (removes segmentation error)
-obmenu-generator -p      
+sudo xbps-remove lxappearance-obconf - cures segmentation error if you have it
+obmenu-generator -p - generates a menu based on installed apps
 
 Edit the .config/obmenu-generator/config.pl and change geany to leafpad
-Right click menu > advanced settings > obmenu-generator > Menu Schema and change the menu default apps
 
-git clone https://github.com/addy-dclxvi/openbox-theme-collections ~/.themes 
-(for some nice openbox themes)
+Go to your right click menu > advanced settings > obmenu-generator > Menu Schema and change the menu default apps to ones you have installed
 
-https://github.com/downthecrop/tint2-theme-collections
-(for some nice tint2 themes)
+For some nice openbox themes:
+git clone https://github.com/addy-dclxvi/openbox-theme-collections ~/.themes
 
-obconf (openbox theme changer - Raven)
-lxappearance (gtk theme changer - Adwaita-dark)
+For some nice tint2 themes:
+git clone https://github.com/downthecrop/tint2-theme-collections.git ~/.config/tint2
 
-https://youtu.be/r5HzpWK7SBY
-(youTube video on Installing openbox)
+obconf  ( openbox theme changer I chose Raven)
+lxappearance  (gtk theme changer I chose Adwaita-dark)
+
+Improve firefox font rendering by taking away bitmap fonts
+sudo ln -s /usr/share/fontconfig/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d/
+
+## Logout UI
+For this I use Clearine see okitavera's github page
+sudo xbps-install -S clearine
+
+Copy /etc/clearine.conf to ~/.config/clearine.conf  
+Edit the file and change the commands as we are using elogind:
+restart = loginctl reboot
+shutdown = loginctl poweroff
+
+Or just copy my config over to ~/.config/
+
+Also, it would be a good idea to read the Void Linux Power Management page.
+Notes:
+
+YouTube video by General F Stab on installing Void Linux with i3-gaps
+
+YouTube video by downthecrop on installing Openbox
+
+YouTube video by DistroTube on installing Openbox
 
 Edit:
 .config/tint2rc (for panel changes)
 .config/openbox/rc.xml (for keybindings)
+
+or use your new right click menu links
+
 
